@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -37,9 +36,6 @@ body{
   width:60px;
   height:60px;
   background:url('https://cdn-icons-png.flaticon.com/512/616/616408.png') center/cover;
-  left:50%;
-  bottom:10px;
-  transform:translateX(-50%);
 }
 
 /* Cars */
@@ -51,6 +47,18 @@ body{
   border-radius:10px;
 }
 
+/* Score */
+#score{
+  position:fixed;
+  top:10px;
+  left:10px;
+  font-size:20px;
+  font-weight:bold;
+  background:white;
+  padding:8px 12px;
+  border-radius:10px;
+}
+
 /* Mobile Controls */
 #controls{
   position:fixed;
@@ -59,6 +67,7 @@ body{
   display:flex;
   justify-content:center;
   gap:15px;
+  flex-wrap:wrap;
 }
 
 .btn{
@@ -76,8 +85,17 @@ body{
 }
 
 .btn:active{ background:#ddd; }
-</style>
 
+#restart{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  padding:15px 25px;
+  font-size:20px;
+  display:none;
+}
+</style>
 </head>
 
 <body>
@@ -86,22 +104,42 @@ body{
   <div id="hen"></div>
 </div>
 
-<!-- Mobile Buttons -->
+<div id="score">Score: 0</div>
 
+<!-- Mobile Buttons -->
 <div id="controls">
   <div class="btn" id="left">◀</div>
   <div class="btn" id="up">▲</div>
+  <div class="btn" id="down">▼</div>
   <div class="btn" id="right">▶</div>
 </div>
+
+<button id="restart">Restart Game</button>
 
 <script>
 const hen = document.getElementById("hen");
 const game = document.getElementById("game");
+const restartBtn = document.getElementById("restart");
+const scoreBox = document.getElementById("score");
 
-let x = window.innerWidth/2 - 30;
-let y = window.innerHeight - 80;
+let x, y, score, gameRunning;
+
+function startGame(){
+  x = window.innerWidth/2 - 30;
+  y = window.innerHeight - 80;
+  score = 0;
+  gameRunning = true;
+  hen.style.left = x + "px";
+  hen.style.top = y + "px";
+  scoreBox.innerHTML = "Score: " + score;
+  restartBtn.style.display = "none";
+}
+
+startGame();
 
 function move(dx,dy){
+  if(!gameRunning) return;
+
   x += dx;
   y += dy;
 
@@ -112,19 +150,26 @@ function move(dx,dy){
 
   hen.style.left=x+"px";
   hen.style.top=y+"px";
+
+  if(dy<0){
+    score++;
+    scoreBox.innerHTML="Score: "+score;
+  }
 }
 
-/* Keyboard controls */
+/* Keyboard */
 document.addEventListener("keydown",e=>{
   if(e.key==="ArrowLeft")move(-40,0);
   if(e.key==="ArrowRight")move(40,0);
   if(e.key==="ArrowUp")move(0,-40);
+  if(e.key==="ArrowDown")move(0,40);
 });
 
 /* Mobile buttons */
 left.onclick=()=>move(-40,0);
 right.onclick=()=>move(40,0);
 up.onclick=()=>move(0,-40);
+down.onclick=()=>move(0,40);
 
 /* Create lanes */
 for(let i=1;i<6;i++){
@@ -136,6 +181,8 @@ for(let i=1;i<6;i++){
 
 /* Cars */
 function spawnCar(){
+  if(!gameRunning) return;
+
   let car=document.createElement("div");
   car.className="car";
   let laneY=(Math.floor(Math.random()*5)+1)*120;
@@ -146,6 +193,8 @@ function spawnCar(){
   let speed=3+Math.random()*3;
 
   function moveCar(){
+    if(!gameRunning){ car.remove(); return; }
+
     let carX=car.offsetLeft+speed;
     car.style.left=carX+"px";
 
@@ -155,8 +204,8 @@ function spawnCar(){
       laneY < y+60 &&
       laneY+60 > y
     ){
-      alert("💀 GAME OVER");
-      location.reload();
+      gameRunning=false;
+      restartBtn.style.display="block";
     }
 
     if(carX<window.innerWidth+200)
@@ -169,6 +218,11 @@ function spawnCar(){
 }
 
 setInterval(spawnCar,1400);
+
+restartBtn.onclick=()=>{
+  document.querySelectorAll(".car").forEach(c=>c.remove());
+  startGame();
+};
 </script>
 
 </body>
