@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hen Cross Road</title>
+
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  background:#87ceeb;
+  font-family:Arial;
+}
+
+#game{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  background:#4caf50;
+}
+
+/* Road lanes */
+.lane{
+  position:absolute;
+  width:100%;
+  height:80px;
+  background:#333;
+  border-top:4px dashed white;
+  border-bottom:4px dashed white;
+}
+
+/* Hen */
+#hen{
+  position:absolute;
+  width:60px;
+  height:60px;
+  background:url('https://cdn-icons-png.flaticon.com/512/616/616408.png') center/cover;
+  left:50%;
+  bottom:10px;
+  transform:translateX(-50%);
+}
+
+/* Cars */
+.car{
+  position:absolute;
+  width:120px;
+  height:60px;
+  background:red;
+  border-radius:10px;
+}
+
+/* Mobile Controls */
+#controls{
+  position:fixed;
+  bottom:20px;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  gap:15px;
+}
+
+.btn{
+  width:70px;
+  height:70px;
+  background:white;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  font-weight:bold;
+  box-shadow:0 4px 10px rgba(0,0,0,.3);
+  user-select:none;
+}
+
+.btn:active{ background:#ddd; }
+</style>
+
+</head>
+
+<body>
+
+<div id="game">
+  <div id="hen"></div>
+</div>
+
+<!-- Mobile Buttons -->
+
+<div id="controls">
+  <div class="btn" id="left">◀</div>
+  <div class="btn" id="up">▲</div>
+  <div class="btn" id="right">▶</div>
+</div>
+
+<script>
+const hen = document.getElementById("hen");
+const game = document.getElementById("game");
+
+let x = window.innerWidth/2 - 30;
+let y = window.innerHeight - 80;
+
+function move(dx,dy){
+  x += dx;
+  y += dy;
+
+  if(x<0)x=0;
+  if(x>window.innerWidth-60)x=window.innerWidth-60;
+  if(y<0)y=0;
+  if(y>window.innerHeight-60)y=window.innerHeight-60;
+
+  hen.style.left=x+"px";
+  hen.style.top=y+"px";
+}
+
+/* Keyboard controls */
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowLeft")move(-40,0);
+  if(e.key==="ArrowRight")move(40,0);
+  if(e.key==="ArrowUp")move(0,-40);
+});
+
+/* Mobile buttons */
+left.onclick=()=>move(-40,0);
+right.onclick=()=>move(40,0);
+up.onclick=()=>move(0,-40);
+
+/* Create lanes */
+for(let i=1;i<6;i++){
+  let lane=document.createElement("div");
+  lane.className="lane";
+  lane.style.top=(i*120)+"px";
+  game.appendChild(lane);
+}
+
+/* Cars */
+function spawnCar(){
+  let car=document.createElement("div");
+  car.className="car";
+  let laneY=(Math.floor(Math.random()*5)+1)*120;
+  car.style.top=laneY+"px";
+  car.style.left="-150px";
+  game.appendChild(car);
+
+  let speed=3+Math.random()*3;
+
+  function moveCar(){
+    let carX=car.offsetLeft+speed;
+    car.style.left=carX+"px";
+
+    if(
+      carX < x+60 &&
+      carX+120 > x &&
+      laneY < y+60 &&
+      laneY+60 > y
+    ){
+      alert("💀 GAME OVER");
+      location.reload();
+    }
+
+    if(carX<window.innerWidth+200)
+      requestAnimationFrame(moveCar);
+    else
+      car.remove();
+  }
+
+  moveCar();
+}
+
+setInterval(spawnCar,1400);
+</script>
+
+</body>
+</html>
