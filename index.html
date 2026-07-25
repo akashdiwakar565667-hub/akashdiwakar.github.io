@@ -2,13 +2,14 @@
 <div class="search-container-nav">
     <div class="search-box-nav">
         <i class="fas fa-search"></i>
-        <input
-            type="text"
-            placeholder="Search movies..."
-            id="searchInputNav"
-            class="search-input-nav"
-            onkeypress="searchMovie(event)">
+       <input
+    type="text"
+    placeholder="Search movies..."
+    id="searchInputNav"
+    class="search-input-nav"
+    onkeypress="if(event.key==='Enter'){window.location.href='https://1flix.com/';}">
     </div>
+  
 </div>
 
 <script>
