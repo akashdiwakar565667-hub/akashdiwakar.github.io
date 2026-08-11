@@ -1,247 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chomu hai kya laude</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-overflow:hidden;
-background:linear-gradient(135deg,#130019,#25003d,#4b0082,#7b2cbf,#a855f7);
-background-size:400% 400%;
-animation:bgMove 12s ease infinite;
-}
-
-@keyframes bgMove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
-
-body::before{
-content:"";
-position:absolute;
-width:600px;
-height:600px;
-background:#b84dff;
-filter:blur(180px);
-opacity:.25;
-top:-150px;
-left:-150px;
-}
-
-body::after{
-content:"";
-position:absolute;
-width:500px;
-height:500px;
-background:#ff4df8;
-filter:blur(180px);
-opacity:.20;
-bottom:-150px;
-right:-150px;
-}
-
-.container{
-position:relative;
-z-index:10;
-width:90%;
-max-width:850px;
-text-align:center;
-padding:40px;
-background:rgba(255,255,255,.08);
-backdrop-filter:blur(18px);
-border:1px solid rgba(255,255,255,.15);
-border-radius:30px;
-box-shadow:0 20px 60px rgba(0,0,0,.45);
-}
-
-.logo{
-font-size:60px;
-font-weight:700;
-color:white;
-letter-spacing:2px;
-}
-
-.logo span{
-color:#ff5cf7;
-}
-
-.tagline{
-margin-top:10px;
-margin-bottom:35px;
-color:#e5d9ff;
-font-size:18px;
-}
-
-.search-box{
-display:flex;
-align-items:center;
-background:rgba(255,255,255,.10);
-border:1px solid rgba(255,255,255,.15);
-border-radius:60px;
-overflow:hidden;
-}
-
-.search-box input{
-flex:1;
-padding:20px;
-font-size:18px;
-background:transparent;
-border:none;
-outline:none;
-color:white;
-}
-
-.search-box input::placeholder{
-color:#ddd;
-}
-
-.search-box button{
-width:170px;
-border:none;
-cursor:pointer;
-background:linear-gradient(135deg,#d946ef,#9333ea);
-color:white;
-font-size:18px;
-font-weight:600;
-transition:.3s;
-}
-
-.search-box button:hover{
-transform:scale(1.03);
-background:linear-gradient(135deg,#ec4899,#7e22ce);
-}
-
-.features{
-display:flex;
-justify-content:center;
-gap:15px;
-margin-top:30px;
-flex-wrap:wrap;
-}
-
-.feature{
-padding:10px 18px;
-border-radius:30px;
-background:rgba(255,255,255,.08);
-border:1px solid rgba(255,255,255,.10);
-color:white;
-font-size:14px;
-}
-
-.footer{
-margin-top:30px;
-color:#ddd;
-font-size:14px;
-line-height:1.7;
-}
-
-.footer b{
-color:#ff7bf9;
-}
-
-@media(max-width:700px){
-
-.logo{
-font-size:42px;
-}
-
-.search-box{
-flex-direction:column;
-border-radius:20px;
-}
-
-.search-box input{
-width:100%;
-}
-
-.search-box button{
-width:100%;
-padding:18px;
-}
-
-}
-</style>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CINEMORA - Premium Cinematic Experience</title>
+  <meta name="description" content="Discover and stream high quality movies and TV series with liquid glass design." />
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<div class="container">
+  <!-- Ambient Animated Glass Blobs -->
+  <div class="ambient-background">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
 
-<div class="logo">
-1FLIX <span>Search</span>
-</div>
+  <!-- Header / Navigation -->
+  <header class="navbar-header" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand-logo" id="logoBtn">
+        <i class="fa-solid fa-clapperboard logo-icon"></i>
+        <span>CINEMORA</span>
+      </a>
 
-<div class="tagline">
-🎬 Search Movies • TV Shows • Anime • Web Series
-</div>
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="nav-item active" data-filter="all"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="#movies" class="nav-item" data-filter="movie"><i class="fa-solid fa-film"></i> Movies</a>
+        <a href="#series" class="nav-item" data-filter="series"><i class="fa-solid fa-tv"></i> Series</a>
+        <a href="#genres" class="nav-item" id="navGenresBtn"><i class="fa-solid fa-shapes"></i> Genres</a>
+        <a href="#trending" class="nav-item" id="navTrendingBtn"><i class="fa-solid fa-fire"></i> Trending</a>
+      </nav>
 
-<form id="searchForm">
+      <div class="nav-actions">
+        <button class="icon-btn search-trigger-btn" id="searchTriggerBtn" title="Search (Press '/')">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <button class="icon-btn" id="surpriseBtn" title="Surprise Me!">
+          <i class="fa-solid fa-dice"></i>
+        </button>
+        <button class="icon-btn watchlist-btn" id="navWatchlistBtn" title="Watchlist">
+          <i class="fa-solid fa-bookmark"></i>
+          <span class="badge" id="watchlistCount">0</span>
+        </button>
+        <button class="icon-btn" id="profileBtn" title="User Profile">
+          <i class="fa-solid fa-user"></i>
+        </button>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
 
-<div class="search-box">
+  <!-- Hero Section -->
+  <section class="hero-section" id="heroSection">
+    <div class="hero-backdrop-container">
+      <img id="heroBackdrop" src="" alt="Hero Backdrop" class="hero-backdrop" />
+      <div class="hero-gradient-overlay"></div>
+    </div>
+    
+    <div class="hero-content glass-panel">
+      <div class="hero-badges">
+        <span class="badge-type" id="heroType">Featured</span>
+        <span class="badge-rating" id="heroRating"><i class="fa-solid fa-star"></i> 8.9</span>
+        <span class="badge-year" id="heroYear">2024</span>
+      </div>
+      <h1 class="hero-title" id="heroTitle">Loading Title...</h1>
+      <p class="hero-description" id="heroDescription">Fetching cinematic marvels...</p>
+      
+      <div class="hero-meta">
+        <span id="heroGenres"><i class="fa-solid fa-tags"></i> Action, Sci-Fi</span>
+        <span id="heroRuntime"><i class="fa-solid fa-clock"></i> 2h 28m</span>
+      </div>
 
-<input
-type="text"
-id="movie"
-placeholder="Search anything..."
-required>
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="heroWatchBtn">
+          <i class="fa-solid fa-play"></i> Watch Now
+        </button>
+        <button class="btn btn-glass" id="heroTrailerBtn">
+          <i class="fa-solid fa-circle-info"></i> More Info
+        </button>
+        <button class="btn btn-glass-icon" id="heroWatchlistBtn" title="Add to Watchlist">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    </div>
+  </section>
 
-<button type="submit">
-🔍 Search
-</button>
+  <!-- Main Container -->
+  <main class="main-content">
+    
+    <!-- Filter & Search Bar -->
+    <section class="filter-section glass-panel">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" placeholder="Search movies, series, cast, or genres... (Press '/')" autocomplete="off" />
+        <button class="clear-search-btn" id="clearSearchBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
 
-</div>
+      <div class="filter-controls">
+        <div class="filter-group">
+          <label><i class="fa-solid fa-filter"></i> Type:</label>
+          <select id="typeFilter" class="glass-select">
+            <option value="all">All Content</option>
+            <option value="movie">Movies</option>
+            <option value="series">TV Series</option>
+          </select>
+        </div>
 
-</form>
+        <div class="filter-group">
+          <label><i class="fa-solid fa-tags"></i> Genre:</label>
+          <select id="genreFilter" class="glass-select">
+            <option value="all">All Genres</option>
+            <!-- Dynamic genres injected by JS -->
+          </select>
+        </div>
 
-<div class="features">
+        <div class="filter-group">
+          <label><i class="fa-solid fa-sort"></i> Sort By:</label>
+          <select id="sortFilter" class="glass-select">
+            <option value="popular">Popularity</option>
+            <option value="rating">Top Rated</option>
+            <option value="newest">Newest Release</option>
+            <option value="title">A - Z</option>
+          </select>
+        </div>
+      </div>
+    </section>
 
-<div class="feature">🔥 Trending</div>
-<div class="feature">🎬 Movies</div>
-<div class="feature">📺 TV Shows</div>
-<div class="feature">🍿 Web Series</div>
-<div class="feature">⭐ HD Quality</div>
+    <!-- Genre Quick Chips Bar -->
+    <div class="genre-chips-container" id="genreChips">
+      <!-- Injected via JS -->
+    </div>
 
-</div>
+    <!-- Active Filter/Search Results Container (Hidden by default) -->
+    <section class="content-section hidden" id="searchResultsSection">
+      <div class="section-header">
+        <h2 class="section-title" id="searchResultsTitle"><i class="fa-solid fa-magnifying-glass"></i> Search Results</h2>
+        <span class="result-count" id="resultCount">0 items found</span>
+      </div>
+      <div class="movie-grid" id="searchResultsGrid"></div>
+    </section>
 
-<div class="footer">
-Made with ❤️ by <b>Akash</b><br>
-Instagram: href="https://www.instagram.com/reel/DbiUy5DyQcJ/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="Link>
-</div>
+    <!-- Continue Watching Section -->
+    <section class="content-section hidden" id="continueWatchingSection">
+      <div class="section-header">
+        <h2 class="section-title"><i class="fa-solid fa-rotate-right"></i> Continue Watching</h2>
+      </div>
+      <div class="movie-grid horizontal-scroll" id="continueWatchingGrid"></div>
+    </section>
 
-</div>
+    <!-- Trending Now -->
+    <section class="content-section" id="trendingSection">
+      <div class="section-header">
+        <h2 class="section-title"><i class="fa-solid fa-fire text-fire"></i> Trending Now</h2>
+      </div>
+      <div class="movie-grid" id="trendingGrid"></div>
+    </section>
 
-<script>
+    <!-- Popular Movies -->
+    <section class="content-section" id="popularMoviesSection">
+      <div class="section-header">
+        <h2 class="section-title"><i class="fa-solid fa-film"></i> Popular Movies</h2>
+      </div>
+      <div class="movie-grid" id="popularMoviesGrid"></div>
+    </section>
 
-document.getElementById("searchForm").addEventListener("submit",function(e){
+    <!-- Popular Series -->
+    <section class="content-section" id="popularSeriesSection">
+      <div class="section-header">
+        <h2 class="section-title"><i class="fa-solid fa-tv"></i> Popular TV Series</h2>
+      </div>
+      <div class="movie-grid" id="popularSeriesGrid"></div>
+    </section>
 
-e.preventDefault();
+    <!-- Top Rated Section -->
+    <section class="content-section" id="topRatedSection">
+      <div class="section-header">
+        <h2 class="section-title"><i class="fa-solid fa-trophy text-gold"></i> Top Rated Masterpieces</h2>
+      </div>
+      <div class="movie-grid" id="topRatedGrid"></div>
+    </section>
 
-const movie=document.getElementById("movie").value.trim();
+  </main>
 
-if(movie==="") return;
+  <!-- Footer -->
+  <footer class="main-footer glass-panel">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="#" class="brand-logo">
+          <i class="fa-solid fa-clapperboard"></i> CINEMORA
+        </a>
+        <p>Premium dark glassmorphism discovery interface. Powered by pure Vanilla JS & CSS3.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#movies">Movies</a>
+        <a href="#series">Series</a>
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#terms">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 CINEMORA. Legal Demo Content Platform. Designed for performance.</p>
+    </div>
+  </footer>
 
-// Redirect to MoviesDrive search
-window.location.href="https://new1.moviesdrive.christmas/search.html?q="+encodeURIComponent(movie);
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTopBtn" title="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
 
-});
+  <!-- MODAL: Movie Details -->
+  <div class="modal-overlay" id="detailsModal">
+    <div class="modal-container glass-modal">
+      <button class="modal-close-btn" id="closeDetailsModal"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="modal-backdrop-wrap">
+        <img id="modalBackdrop" src="" alt="Backdrop" />
+        <div class="modal-backdrop-gradient"></div>
+      </div>
 
-</script>
+      <div class="modal-body">
+        <div class="modal-poster-wrap">
+          <img id="modalPoster" src="" alt="Poster" />
+        </div>
 
+        <div class="modal-details">
+          <div class="modal-badges">
+            <span class="badge-type" id="modalType">Movie</span>
+            <span class="badge-rating" id="modalRating"><i class="fa-solid fa-star"></i> 9.0</span>
+            <span class="badge-year" id="modalYear">2024</span>
+            <span class="badge-duration" id="modalRuntime">2h 15m</span>
+          </div>
+
+          <h2 class="modal-title" id="modalTitle">Movie Title</h2>
+          <p class="modal-genres" id="modalGenres">Action, Drama</p>
+          <p class="modal-description" id="modalDescription">Detailed plot description...</p>
+
+          <div class="modal-credits">
+            <p><strong>Director:</strong> <span id="modalDirector">John Doe</span></p>
+            <p><strong>Cast:</strong> <span id="modalCast">Actor 1, Actor 2, Actor 3</span></p>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-primary" id="modalPlayBtn"><i class="fa-solid fa-play"></i> Watch Now</button>
+            <button class="btn btn-glass" id="modalWatchlistBtn"><i class="fa-solid fa-plus"></i> Add to Watchlist</button>
+          </div>
+
+          <!-- Series Seasons/Episodes Selector -->
+          <div class="series-episodes-container hidden" id="seriesEpisodesContainer">
+            <hr class="glass-divider" />
+            <div class="episodes-header">
+              <h3><i class="fa-solid fa-layer-group"></i> Seasons & Episodes</h3>
+              <select id="seasonSelect" class="glass-select"></select>
+            </div>
+            <div class="episodes-list" id="episodesList"></div>
+          </div>
+
+          <!-- Related Content -->
+          <div class="related-section">
+            <hr class="glass-divider" />
+            <h3><i class="fa-solid fa-compact-disc"></i> More Like This</h3>
+            <div class="related-grid" id="relatedGrid"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Custom Video Watch Player -->
+  <div class="modal-overlay player-modal-overlay" id="playerModal">
+    <div class="player-container">
+      <button class="player-close-btn" id="closePlayerBtn"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="video-wrapper glass-panel">
+        <video id="mainVideoPlayer" poster="" preload="metadata">
+          <source id="videoSource" src="" type="video/mp4" />
+          Your browser does not support HTML5 video player.
+        </video>
+
+        <!-- Custom Video Controls Overlay -->
+        <div class="player-controls" id="playerControls">
+          <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+
+          <div class="controls-row">
+            <div class="controls-left">
+              <button class="control-btn" id="playPauseBtn"><i class="fa-solid fa-play"></i></button>
+              <button class="control-btn" id="nextEpBtn" title="Next Episode"><i class="fa-solid fa-forward-step"></i></button>
+              <div class="volume-container">
+                <button class="control-btn" id="volumeBtn"><i class="fa-solid fa-volume-high"></i></button>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1" class="volume-slider" />
+              </div>
+              <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
+            </div>
+
+            <div class="controls-right">
+              <span class="player-title" id="playerMediaTitle">Playing Title</span>
+              <select id="speedSelect" class="glass-select-sm">
+                <option value="0.5">0.5x</option>
+                <option value="1" selected>1.0x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2.0x</option>
+              </select>
+              <button class="control-btn" id="fullscreenBtn"><i class="fa-solid fa-expand"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: User Profile / Watchlist Drawer -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal-container glass-modal profile-modal-content">
+      <button class="modal-close-btn" id="closeProfileModal"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="profile-header">
+        <div class="profile-avatar"><i class="fa-solid fa-user"></i></div>
+        <div class="profile-info">
+          <h2>Cinephile User</h2>
+          <p class="profile-badge">PREMIUM MEMBER</p>
+        </div>
+      </div>
+
+      <div class="profile-stats">
+        <div class="stat-card glass-panel">
+          <i class="fa-solid fa-bookmark text-accent"></i>
+          <span class="stat-value" id="profileWatchlistCount">0</span>
+          <span class="stat-label">In Watchlist</span>
+        </div>
+        <div class="stat-card glass-panel">
+          <i class="fa-solid fa-clock-rotate-left text-accent"></i>
+          <span class="stat-value" id="profileContinueCount">0</span>
+          <span class="stat-label">In Progress</span>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <h3><i class="fa-solid fa-bookmark"></i> Saved Watchlist</h3>
+        <div class="movie-grid" id="watchlistGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JavaScript -->
+  <script src="js/script.js"></script>
 </body>
 </html>
