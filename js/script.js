@@ -1,5 +1,5 @@
-const poster = (seed) => `https://picsum.photos/seed/cinemora-${encodeURIComponent(seed)}/600/900`;
-const backdrop = (seed) => `https://picsum.photos/seed/cinemora-bg-${encodeURIComponent(seed)}/1600/900`;
+const poster = (seed) => `assets/images/${seed.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}-poster.jpg`;
+const backdrop = (seed) => `assets/images/${seed.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}-backdrop.jpg`;
 
 const baseTitles = [
   ["Neon Horizon","Movie",2026,8.8,["Sci-Fi","Thriller"],"A courier discovers a hidden signal beneath a city that never sleeps."],
@@ -208,6 +208,7 @@ function openDetails(id){
     </div></div>${episodes}<div class="related"><h3>Related</h3><div class="movie-grid">${DATA.filter(x=>x.id!==item.id&&x.genres.some(g=>item.genres.includes(g))).slice(0,6).map(x=>card(x)).join("")}</div></div></div>`;
   attachImageFallbacks($("#modalContent"));
   $("#modalBackdrop").classList.remove("hidden");document.body.style.overflow="hidden";
+  bindDynamicButtons();
 }
 function closeModal(){$("#modalBackdrop").classList.add("hidden");document.body.style.overflow=""}
 function openWatchlist(){
@@ -260,49 +261,217 @@ function renderSuggestions(){
   box.classList.remove("hidden");attachImageFallbacks(box);
 }
 
-document.addEventListener("click",e=>{
-  const nav=e.target.closest("[data-nav]");if(nav){navigate(nav.dataset.nav);return}
-  const filter=e.target.closest("[data-filter]");if(filter){state.filter=filter.dataset.filter;renderCurrent();return}
-  const sort=e.target.closest("[data-seeall]");if(sort){state.query="";state.filter="All";state.sort="popularity";renderLibrary(sort.dataset.seeall,DATA);return}
-  const cardEl=e.target.closest(".movie-card");const action=e.target.closest("[data-action]");
-  if(action){
-    const id=Number(action.dataset.id);
-    if(action.dataset.action==="details")openDetails(id);
-    if(action.dataset.action==="save")toggleWatchlist(id);
-    if(action.dataset.action==="watch")watchDemo(id);
-    if(action.dataset.action==="trailer")showTrailer(id);
-    if(action.dataset.action==="next")watchDemo(id,Number(action.dataset.episode||1)+1);
-    return;
-  }
-  if(cardEl && !e.target.closest("button"))openDetails(cardEl.dataset.id);
-  const sug=e.target.closest(".suggestion");if(sug){openDetails(sug.dataset.id);$("#suggestions").classList.add("hidden")}
-  const ep=e.target.closest(".episode");if(ep)watchDemo(ep.dataset.id,Number(ep.dataset.episode));
-});
-$("#searchInput").addEventListener("input",e=>{state.query=e.target.value;state.view="home";renderHome();renderSuggestions()});
-$("#searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){state.query=e.target.value;$("#suggestions").classList.add("hidden");renderHome()}});
-$("#clearSearch").addEventListener("click",()=>{state.query="";$("#searchInput").value="";renderHome();$("#suggestions").classList.add("hidden")});
-$("#searchToggle").addEventListener("click",showSearch);
-$("#watchlistBtn").addEventListener("click",openWatchlist);
-$("#mobileWatchlist").addEventListener("click",openWatchlist);
-$("#profileBtn").addEventListener("click",openProfile);
-$("#menuToggle").addEventListener("click",()=>$("#mobileMenu").classList.toggle("open"));
-$("#modalClose").addEventListener("click",closeModal);
-$("#modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeModal()});
-$("#drawerClose").addEventListener("click",()=>$("#drawer").classList.remove("open"));
-$("#surpriseBtn").addEventListener("click",()=>openDetails(DATA[Math.floor(Math.random()*DATA.length)].id));
-$("#sortSelect").addEventListener("change",e=>{state.sort=e.target.value;renderCurrent()});
-$("#backTop").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
-window.addEventListener("scroll",()=>$("#backTop").classList.toggle("show",scrollY>500));
-document.addEventListener("keydown",e=>{
-  if(e.key==="Escape"){closeModal();$("#mobileMenu").classList.remove("open");$("#drawer").classList.remove("open");$("#suggestions").classList.add("hidden")}
-  if(e.key==="/" && document.activeElement.tagName!=="INPUT" && document.activeElement.tagName!=="TEXTAREA"){e.preventDefault();showSearch()}
-});
-document.addEventListener("click",e=>{
-  if(e.target.id==="clearData"||e.target.id==="clearData2"){
-    try{["cinemora-watchlist","cinemora-progress","cinemora-recent"].forEach(k=>localStorage.removeItem(k))}catch{}
-    state.watchlist=[];state.progress={};state.recent=[];toast("Local data cleared");updateCount();renderCurrent();
-  }
-});
-let heroTimer=setInterval(()=>{state.heroIndex=(state.heroIndex+1)%6;renderHero()},6500);
 
-renderHero();renderCurrent();updateCount();
+function bindNav(){
+  document.querySelectorAll("[data-nav]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const view=btn.dataset.nav;
+      state.view=view;
+      state.query="";
+      state.filter="All";
+      const input=document.getElementById("searchInput");
+      if(input) input.value="";
+      document.querySelectorAll(".nav-link").forEach(x=>x.classList.toggle("active",x.dataset.nav===view));
+      document.getElementById("mobileMenu")?.classList.remove("open");
+      renderCurrent();
+      window.scrollTo({top:0,behavior:"smooth"});
+    });
+  });
+}
+
+function bindCardActions(){
+  document.querySelectorAll(".movie-card").forEach(el=>{
+    el.addEventListener("click",e=>{
+      const action=e.target.closest("[data-action]");
+      if(action){
+        e.stopPropagation();
+        const id=Number(action.dataset.id);
+        if(action.dataset.action==="details") openDetails(id);
+        if(action.dataset.action==="save") toggleWatchlist(id);
+        if(action.dataset.action==="watch") watchDemo(id);
+        if(action.dataset.action==="trailer") showTrailer(id);
+        return;
+      }
+      openDetails(Number(el.dataset.id));
+    });
+  });
+}
+
+function bindDynamicButtons(){
+  bindCardActions();
+  document.querySelectorAll("[data-filter]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      state.filter=btn.dataset.filter;
+      renderCurrent();
+    });
+  });
+
+  document.querySelectorAll("[data-seeall]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      state.query="";
+      state.filter="All";
+      state.sort="popularity";
+      renderLibrary(btn.dataset.seeall,DATA);
+    });
+  });
+
+  document.querySelectorAll(".suggestion").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      openDetails(Number(btn.dataset.id));
+      document.getElementById("suggestions")?.classList.add("hidden");
+    });
+  });
+
+  document.querySelectorAll(".episode").forEach(ep=>{
+    ep.addEventListener("click",()=>watchDemo(Number(ep.dataset.id),Number(ep.dataset.episode)));
+  });
+
+  document.querySelectorAll("[data-action]").forEach(btn=>{
+    if(btn.closest(".movie-card")) return;
+    btn.addEventListener("click",()=>{
+      const id=Number(btn.dataset.id);
+      if(btn.dataset.action==="details") openDetails(id);
+      if(btn.dataset.action==="save") toggleWatchlist(id);
+      if(btn.dataset.action==="watch") watchDemo(id);
+      if(btn.dataset.action==="trailer") showTrailer(id);
+      if(btn.dataset.action==="next") watchDemo(id,Number(btn.dataset.episode||1)+1);
+    });
+  });
+
+  document.querySelectorAll(".drawer-card [data-action]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const id=Number(btn.dataset.id);
+      if(btn.dataset.action==="details") openDetails(id);
+      if(btn.dataset.action==="save") toggleWatchlist(id);
+    });
+  });
+}
+
+function renderCurrent(){
+  if(state.view==="home") renderHome();
+  else if(state.view==="movies") renderLibrary("Movies",DATA.filter(x=>x.type==="Movie"));
+  else if(state.view==="series") renderLibrary("Series",DATA.filter(x=>x.type==="Series"));
+  else if(state.view==="trending") renderLibrary("Trending",DATA.slice().sort((a,b)=>b.popularity-a.popularity));
+  else if(state.view==="genres") renderLibrary("Browse Genres",DATA);
+  else renderHome();
+  updateCount();
+  bindDynamicButtons();
+  attachImageFallbacks(document);
+}
+
+function renderHome(){
+  document.getElementById("pageTitle").textContent="Trending Now";
+  document.getElementById("sortRow").classList.add("hidden");
+  filters();
+
+  const eligible=DATA.filter(matches);
+  if(state.query || state.filter!=="All"){
+    document.getElementById("sections").innerHTML=eligible.length
+      ? `<section class="content-section sort-results"><div class="section-title"><h3>${eligible.length} result${eligible.length===1?"":"s"}</h3></div><div class="movie-grid">${sorted(eligible).map((x,i)=>card(x,i*25)).join("")}</div></section>`
+      : `<div class="empty-state glass-panel"><div class="empty-icon">⌕</div><h3>No stories found</h3><p>Try another title, genre or year.</p></div>`;
+  }else{
+    const continueItems=DATA.filter(x=>state.progress[x.id]?.percent>0&&state.progress[x.id]?.percent<100);
+    const recentItems=state.recent.map(find).filter(Boolean);
+    document.getElementById("sections").innerHTML=
+      section("Trending Now",DATA.slice(0,12))+
+      section("Popular Movies",DATA.filter(x=>x.type==="Movie").slice(0,12))+
+      section("Popular Series",DATA.filter(x=>x.type==="Series").slice(0,12))+
+      (continueItems.length?section("Continue Watching",continueItems):"")+
+      (recentItems.length?section("Recently Viewed",recentItems):"")+
+      section("New Releases",[...DATA].sort((a,b)=>b.year-a.year).slice(0,12))+
+      section("Top Rated",[...DATA].sort((a,b)=>b.rating-a.rating).slice(0,12));
+  }
+}
+
+function renderLibrary(title,items){
+  document.getElementById("pageTitle").textContent=title;
+  document.getElementById("sortRow").classList.remove("hidden");
+  filters();
+  const out=sorted(items.filter(matches));
+  document.getElementById("sections").innerHTML=out.length
+    ? `<section class="content-section sort-results"><div class="movie-grid">${out.map((x,i)=>card(x,i*20)).join("")}</div></section>`
+    : `<div class="empty-state glass-panel"><div class="empty-icon">♡</div><h3>Nothing found</h3><p>Try another filter.</p></div>`;
+}
+
+function renderSuggestions(){
+  const q=state.query.trim().toLowerCase();
+  const box=document.getElementById("suggestions");
+  if(!q){box.classList.add("hidden");return}
+  const items=DATA.filter(x=>(x.title+" "+x.genres.join(" ")+" "+x.year).toLowerCase().includes(q)).slice(0,6);
+  box.innerHTML=items.length
+    ? items.map(x=>`<button class="suggestion" data-id="${x.id}"><img src="${x.poster}" alt=""><span><b>${esc(x.title)}</b><br><small>${x.year} • ${x.type} • ★ ${x.rating}</small></span></button>`).join("")
+    : `<div style="padding:15px;color:#8c93a3;font-size:12px">No matching titles.</div>`;
+  box.classList.remove("hidden");
+  attachImageFallbacks(box);
+  bindDynamicButtons();
+}
+
+function init(){
+  bindNav();
+  document.getElementById("searchInput").addEventListener("input",e=>{
+    state.query=e.target.value;
+    state.view="home";
+    renderHome();
+    renderSuggestions();
+    bindDynamicButtons();
+  });
+  document.getElementById("searchInput").addEventListener("keydown",e=>{
+    if(e.key==="Enter"){
+      document.getElementById("suggestions").classList.add("hidden");
+      renderHome();
+      bindDynamicButtons();
+    }
+  });
+  document.getElementById("clearSearch").addEventListener("click",()=>{
+    state.query="";
+    document.getElementById("searchInput").value="";
+    document.getElementById("suggestions").classList.add("hidden");
+    renderHome();
+    bindDynamicButtons();
+  });
+  document.getElementById("searchToggle").addEventListener("click",showSearch);
+  document.getElementById("watchlistBtn").addEventListener("click",openWatchlist);
+  document.getElementById("mobileWatchlist").addEventListener("click",openWatchlist);
+  document.getElementById("profileBtn").addEventListener("click",openProfile);
+  document.getElementById("settingsBtn").addEventListener("click",openSettings);
+  document.getElementById("menuToggle").addEventListener("click",()=>document.getElementById("mobileMenu").classList.toggle("open"));
+  document.getElementById("modalClose").addEventListener("click",closeModal);
+  document.getElementById("modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeModal()});
+  document.getElementById("drawerClose").addEventListener("click",()=>document.getElementById("drawer").classList.remove("open"));
+  document.getElementById("surpriseBtn").addEventListener("click",()=>openDetails(DATA[Math.floor(Math.random()*DATA.length)].id));
+  document.getElementById("sortSelect").addEventListener("change",e=>{state.sort=e.target.value;renderCurrent()});
+  document.getElementById("backTop").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+  window.addEventListener("scroll",()=>document.getElementById("backTop").classList.toggle("show",scrollY>500));
+  document.addEventListener("keydown",e=>{
+    if(e.key==="Escape"){
+      closeModal();
+      document.getElementById("mobileMenu").classList.remove("open");
+      document.getElementById("drawer").classList.remove("open");
+      document.getElementById("suggestions").classList.add("hidden");
+    }
+    if(e.key==="/" && !["INPUT","TEXTAREA"].includes(document.activeElement.tagName)){
+      e.preventDefault();showSearch();
+    }
+  });
+  document.addEventListener("click",e=>{
+    if(e.target.id==="clearData"||e.target.id==="clearData2"){
+      try{["cinemora-watchlist","cinemora-progress","cinemora-recent"].forEach(k=>localStorage.removeItem(k))}catch{}
+      state.watchlist=[];state.progress={};state.recent=[];
+      toast("Local data cleared");
+      document.getElementById("drawer").classList.remove("open");
+      renderCurrent();
+    }
+  });
+
+  renderHero();
+  renderCurrent();
+  updateCount();
+  bindDynamicButtons();
+
+  setInterval(()=>{
+    state.heroIndex=(state.heroIndex+1)%6;
+    renderHero();
+  },6500);
+}
+
+init();
