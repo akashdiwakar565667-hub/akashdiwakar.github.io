@@ -347,24 +347,15 @@ function openSettings() {
   $("#drawer").classList.add("open");
 }
 
-async function searchTMDB(q) {
-  if (!q.trim()) { renderHome(); return; }
-  try {
-    const data = await api("/search/multi", {query:q, language:"en-US", include_adult:"false", page:1});
-    const results = (data.results || [])
-      .filter(x=>x.media_type==="movie" || x.media_type==="tv")
-      .map(x=>normalize(x, x.media_type==="movie" ? "Movie" : "Series"));
-    $("#pageTitle").textContent = `${results.length} Search Results`;
-    $("#sortRow").classList.remove("hidden");
-    $("#filterRow").innerHTML = "";
-    $("#sections").innerHTML = results.length
-      ? section("Results", results)
-      : `<div class="empty-state glass-panel"><h3>No results</h3><p>Try a different search.</p></div>`;
-    bindDynamic();
-  } catch(e) {
-    toast("Search failed.");
-    console.error(e);
-  }
+function searchTMDB(q) {
+  q = q.trim();
+
+  if (!q) return;
+
+  window.location.href =
+    "https://watch.spencerdevs.xyz/search?q=" +
+    encodeURIComponent(q);
+}
 }
 
 function bindDynamic() {
@@ -452,13 +443,7 @@ function bindUI() {
   };
 
   document.addEventListener("click", e => {
-    if (e.target.id === "clearData" || e.target.id === "clearData2") {
-      ["cinemora-watchlist","cinemora-recent"].forEach(k=>localStorage.removeItem(k));
-      state.watchlist=[]; state.recent=[];
-      updateCount(); toast("Local data cleared");
-      $("#drawer").classList.remove("open");
-      renderCurrent();
-    }
+  $("#searchInput").oninput = () => {};
   });
 
   document.addEventListener("keydown", e => {
