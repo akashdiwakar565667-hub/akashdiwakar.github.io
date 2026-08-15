@@ -1,33 +1,23 @@
-# 🎮 Stick Hero Game
-
-A fun browser-based Stick Hero game built using HTML, CSS, and JavaScript.
+A website that show you TV show, Movies, built using HTML, CSS, and JavaScript.
 
 ## 🚀 Features
 - 🎯 Perfect hit system
-- 🏆 Leaderboard (Top scores saved)
-- 🎨 Multiple character skins
-- 🧍 Animated stickman character
+- 🏆Best quality 
+- 🎨 Multiple shows and movies
+- 🧍 Animated buttons and more
 - 📱 Mobile + PC support
 
-## ▶️ Play Game
+## ▶️ My work 
 Click here to play:  
 https://akashdiwakar565667-hub.github.io
 
-## 🕹️ How to Play
-- Hold click/touch to grow the stick  
-- Release to drop the stick  
-- Walk to the next platform  
-- Don’t fall 😅  
 
 ## 🛠️ Tech Used
 - HTML
 - CSS
 - JavaScript
 
-## 💡 Future Ideas
-- Online leaderboard 🌐  
-- Sound effects 🔊  
-- New skins 🎨  
+## i need to learn how api work
 
 ---
 
