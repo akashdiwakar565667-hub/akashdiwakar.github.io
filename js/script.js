@@ -1,5 +1,5 @@
 /* CINEMORA TMDB EDITION
-   IMPORTANT: Replace the placeholder below with your NEW TMDB API key.
+
 */
 const API_KEY = "f69c4c12d7283161b450f3e3d2bcacfd";
 const TMDB = "https://api.themoviedb.org/3";
