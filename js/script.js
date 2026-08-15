@@ -355,7 +355,7 @@ async function searchTMDB(q) {
       .filter(x => x.media_type==="movie" || x.media_type==="tv")
       .map(x => normalize(x, x.media_type==="movie" ? "Movie" : "Series"));
 state.all = results;
-    $("#pageTitle").textContent = `${results.length} Search Results`;
+
     $("#sortRow").classList.remove("hidden");
 
     $("#filterRow").innerHTML = "";
