@@ -436,28 +436,38 @@ function bindUI() {
   bindNavigation();
 
   $("#searchToggle").onclick = () => {
-    $("#searchArea").scrollIntoView({behavior:"smooth",block:"center"});
+    $("#searchArea").scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
     $("#searchInput").focus();
   };
+
   $("#searchInput").onkeydown = e => {
     if (e.key === "Enter") searchTMDB(e.target.value);
   };
+
   $("#clearSearch").onclick = () => {
     state.query = "";
     $("#searchInput").value = "";
     renderHome();
   };
+
   $("#watchlistBtn").onclick = openWatchlist;
   $("#mobileWatchlist").onclick = openWatchlist;
   $("#profileBtn").onclick = openProfile;
   $("#settingsBtn").onclick = openSettings;
-  $("#menuToggle").onclick = () => $("#mobileMenu").classList.toggle("open");
-  $("#modalClose").onclick = closeModal;
-  $("#drawerClose").onclick = () => $("#drawer").classList.remove("open");
-  $("#modalBackdrop").onclick = e => { if (e.target.id === "modalBackdrop") closeModal(); };
+  $("#menuToggle").onclick = () =>
+    $("#mobileMenu").classList.toggle("open");
 
- 
-  
+  $("#modalClose").onclick = closeModal;
+  $("#drawerClose").onclick = () =>
+    $("#drawer").classList.remove("open");
+
+  $("#modalBackdrop").onclick = e => {
+    if (e.target.id === "modalBackdrop") closeModal();
+  };
+
   document.addEventListener("keydown", e => {
     if (e.key === "Escape") {
       closeModal();
@@ -465,6 +475,7 @@ function bindUI() {
       $("#mobileMenu").classList.remove("open");
     }
   });
+}
 }
 
 function closeModal() {
