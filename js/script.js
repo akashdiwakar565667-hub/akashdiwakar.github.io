@@ -347,30 +347,62 @@ function openSettings() {
   $("#drawer").classList.add("open");
 }
 
-function searchTMDB(q) {
-  q = q.trim();
+async function searchTMDB(q) {
+  if (!(q.trim())) { renderHome(); return; }
+  try {
+    const data = await api("/search/multi", {query:q, language:"en-US", include_adult:"false", page:1});
+    const results = (data.results || [])
+      .filter(x => x.media_type==="movie" || x.media_type==="tv")
+      .map(x => normalize(x, x.media_type==="movie" ? "Movie" : "Series"));
 
-  if (!q) return;
+    $("#pageTitle").textContent = `${results.length} Search Results`;
+    $("#sortRow").classList.remove("hidden");
 
-  window.location.href =
-    "https://watch.spencerdevs.xyz/search?q=" +
-    encodeURIComponent(q);
-}
+    $("#filterRow").innerHTML = "";
+
+    $("#sections").innerHTML = results.length
+      ? section("Results", results)
+      : `<div class="empty-state glass-panel"><h3>No results</h3><p>Try a different search.</p></div>`;
+
+    bindDynamic();
+  } catch(e) {
+    toast("Search failed.");
+    console.error(e);
+  }
 }
 
 function bindDynamic() {
-  $$(".movie-card").forEach(el => {
-    el.onclick = e => {
-      if (e.target.closest("button")) return;
-      openDetails(Number(el.dataset.id), el.dataset.type);
-    };
-  });
+$$(".movie-card").forEach(el => {
+  el.onclick = e => {
+    if (e.target.closest("button")) return;
+
+    const title = el.querySelector(".card-title")?.textContent || "";
+
+    window.open(
+      "https://watch.spencerdevs.xyz/search?q=" +
+      encodeURIComponent(title),
+      "_blank"
+    );
+  };
+});
 
   $$("[data-action]").forEach(btn => {
     btn.onclick = e => {
       e.stopPropagation();
       const id = Number(btn.dataset.id), type = btn.dataset.type;
-      if (btn.dataset.action === "details") openDetails(id,type);
+    if (btn.dataset.action === "details") {
+  const item = state.all.find(
+    x => x.id === id && x.type === type
+  );
+
+  if (item) {
+    window.open(
+      "https://watch.spencerdevs.xyz/search?q=" +
+      encodeURIComponent(item.title),
+      "_blank"
+    );
+  }
+}
       if (btn.dataset.action === "save") toggleWatchlist(id);
     };
   });
@@ -423,29 +455,9 @@ function bindUI() {
   $("#modalClose").onclick = closeModal;
   $("#drawerClose").onclick = () => $("#drawer").classList.remove("open");
   $("#modalBackdrop").onclick = e => { if (e.target.id === "modalBackdrop") closeModal(); };
-  $("#surpriseBtn").onclick = () => {
-    const list = state.all;
-    if (list.length) {
-      const x = list[Math.floor(Math.random()*list.length)];
-      openDetails(x.id,x.type);
-    }
-  };
-  $("#sortSelect").onchange = e => { state.sort = e.target.value; renderCurrent(); };
-  $("#backTop").onclick = () => window.scrollTo({top:0,behavior:"smooth"});
-  window.addEventListener("scroll", () => $("#backTop").classList.toggle("show", scrollY > 500));
 
-  $("#searchInput").oninput = e => {
-    state.query = e.target.value;
-    const q = e.target.value.trim();
-    if (!q) { renderHome(); return; }
-    clearTimeout(window.__searchTimer);
-    window.__searchTimer = setTimeout(() => searchTMDB(q), 450);
-  };
-
-  document.addEventListener("click", e => {
-  $("#searchInput").oninput = () => {};
-  });
-
+ 
+  
   document.addEventListener("keydown", e => {
     if (e.key === "Escape") {
       closeModal();
