@@ -68,14 +68,7 @@ async function api(path, params = {}) {
 
   return res.json();
 }
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`TMDB request failed: ${res.status} ${text}`);
-  }
-
-  return res.json();
-}
-
+ 
 function normalize(x, type) {
   const isMovie = type === "Movie";
   return {
