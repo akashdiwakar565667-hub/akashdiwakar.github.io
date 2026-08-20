@@ -1,5 +1,5 @@
 
-const API_KEY = "f69c4c12d7283161b450f3e3d2bcacfd";
+const API_KEY = "c3d899b291236d577ecc17aab564311c";
 const TMDB = "https://api.themoviedb.org/3";
 const IMG = "https://image.tmdb.org/t/p/";
 
