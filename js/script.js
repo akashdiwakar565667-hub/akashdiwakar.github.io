@@ -50,7 +50,6 @@ function placeholder() {
     </svg>`
   );
 }
-
 async function api(path, params = {}) {
   const url = new URL(TMDB_PROXY);
 
@@ -62,6 +61,13 @@ async function api(path, params = {}) {
 
   const res = await fetch(url.toString());
 
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`TMDB request failed: ${res.status} ${text}`);
+  }
+
+  return res.json();
+}
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`TMDB request failed: ${res.status} ${text}`);
