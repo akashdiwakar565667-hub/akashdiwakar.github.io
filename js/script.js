@@ -1,6 +1,4 @@
-
-const API_KEY = "MY_NEW_API_KEY";
-const TMDB = "https://api.themoviedb.org/3";
+const TMDB_PROXY = "https://YOUR-VERCEL-DOMAIN.vercel.app/api/tmdb";
 const IMG = "https://image.tmdb.org/t/p/";
 
 const $ = s => document.querySelector(s);
@@ -56,14 +54,21 @@ function placeholder() {
 }
 
 async function api(path, params = {}) {
-  if (!API_KEY || API_KEY === "YOUR_NEW_TMDB_API_KEY") {
-    throw new Error("TMDB API key is missing. Add it at the top of js/script.js.");
+  const url = new URL(TMDB_PROXY);
+
+  url.searchParams.set("path", path);
+
+  Object.entries(params).forEach(([k, v]) => {
+    url.searchParams.set(k, v);
+  });
+
+  const res = await fetch(url.toString());
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`TMDB request failed: ${res.status} ${text}`);
   }
-  const url = new URL(TMDB + path);
-  url.searchParams.set("api_key", API_KEY);
-  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`TMDB request failed: ${res.status}`);
+
   return res.json();
 }
 
