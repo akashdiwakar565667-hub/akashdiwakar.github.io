@@ -1,7 +1,5 @@
-const TMDB_PROXY = "https://YOUR-VERCEL-DOMAIN.vercel.app/api/tmdb";
-const IMG = "https://image.tmdb.org/t/p/";
-
-const $ = s => document.querySelector(s);
+const TMDB_PROXY = "https://akashdiwakar565667-hub-github-io.vercel.app/api/tmdb";
+const IMG = "https://image.tmdb.org/t/p/";const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 
 const state = {
