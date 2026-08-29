@@ -633,7 +633,7 @@ function bindUI() {
 
   $("#watchlistBtn").onclick = openWatchlist;
   $("#mobileWatchlist").onclick = openWatchlist;
-  $("#profileBtn").onclick = openProfile;
+ 
   $("#settingsBtn").onclick = openSettings;
   $("#menuToggle").onclick = () =>
     $("#mobileMenu").classList.toggle("open");
