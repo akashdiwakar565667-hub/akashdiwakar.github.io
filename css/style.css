@@ -162,3 +162,13 @@
     font-size: 26px;
   }
 }
+/* AUTH SIGNUP FIELD FIX */
+.auth-field.signup-only {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+
+.auth-field.signup-only.hidden {
+  display: none;
+}
