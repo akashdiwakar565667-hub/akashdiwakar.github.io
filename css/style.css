@@ -40,3 +40,125 @@
   font-size: 13px;
   opacity: 0.6;
 }
+/* =========================
+   CINEMORA AUTH UI
+   ========================= */
+
+.auth-modal {
+  width: min(430px, 100%);
+  padding: 34px;
+  border-radius: 24px;
+  animation: authPop .28s ease both;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.auth-header h2 {
+  margin: 4px 0 8px;
+  font-size: 30px;
+  letter-spacing: -.04em;
+}
+
+.auth-header p:last-child {
+  margin: 0;
+  color: #8f96a6;
+  font-size: 12px;
+}
+
+.auth-field {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+
+.auth-field label {
+  color: #cdd2de;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.auth-field input {
+  width: 100%;
+  height: 46px;
+  padding: 0 13px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.1);
+  outline: none;
+  background: rgba(255,255,255,.055);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  transition: .2s;
+}
+
+.auth-field input::placeholder {
+  color: #737a8b;
+}
+
+.auth-field input:focus {
+  border-color: rgba(157,135,255,.6);
+  background: rgba(255,255,255,.075);
+  box-shadow: 0 0 0 3px rgba(125,97,255,.1);
+}
+
+#authSubmit {
+  width: 100%;
+  margin-top: 5px;
+  min-height: 46px;
+}
+
+.auth-switch {
+  margin: 20px 0 0;
+  text-align: center;
+  color: #858c9c;
+  font-size: 12px;
+}
+
+.auth-switch button {
+  border: 0;
+  background: transparent;
+  color: #a58cff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0 0 0 4px;
+}
+
+.auth-switch button:hover {
+  color: #c0b2ff;
+}
+
+.auth-message {
+  min-height: 18px;
+  margin: 13px 0 0;
+  text-align: center;
+  color: #aeb5c5;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+@keyframes authPop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .auth-modal {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .auth-header h2 {
+    font-size: 26px;
+  }
+}
