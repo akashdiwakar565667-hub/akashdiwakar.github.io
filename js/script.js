@@ -1,3 +1,10 @@
+const SUPABASE_URL = "https://arbndmdtymvbxoepatfa.supabase.co";
+const SUPABASE_KEY = "sb_publishable_OnRaBC60COjHC0S-ra-Puw_kAe9Sq5I";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 const TMDB_PROXY = "https://akashdiwakar565667-hub-github-io.vercel.app/api/tmdb";
 const IMG = "https://image.tmdb.org/t/p/";const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -35,6 +42,175 @@ function toast(message) {
   el.textContent = message;
   $("#toastStack").appendChild(el);
   setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 300); }, 2200);
+}
+
+let authMode = "login";
+
+function openAuth(mode = "login") {
+  authMode = mode;
+
+  $("#authBackdrop").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+
+  updateAuthUI();
+}
+
+function closeAuth() {
+  $("#authBackdrop").classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+function updateAuthUI() {
+  const signup = authMode === "signup";
+
+  $("#authTitle").textContent = signup ? "Create Account" : "Login";
+
+  $("#authSubtitle").textContent = signup
+    ? "Create your Cinemora account."
+    : "Continue your cinematic journey.";
+
+  $("#authSubmit").textContent =
+    signup ? "Create Account" : "Login";
+
+  $("#authSwitchText").textContent =
+    signup ? "Already have an account?" : "Don't have an account?";
+
+  $("#authSwitch").textContent =
+    signup ? "Login" : "Sign Up";
+
+  $$(".signup-only").forEach(el => {
+    el.classList.toggle("hidden", !signup);
+  });
+
+  $("#authMessage").textContent = "";
+}
+
+async function handleAuth(event) {
+  event.preventDefault();
+
+  const email = $("#authEmail").value.trim();
+  const password = $("#authPassword").value;
+  const username = $("#authName").value.trim();
+
+  const message = $("#authMessage");
+  const submit = $("#authSubmit");
+
+  message.textContent = "";
+  submit.disabled = true;
+
+  try {
+    if (authMode === "signup") {
+
+      if (!username) {
+        throw new Error("Please enter a username.");
+      }
+
+      const { error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            username
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      message.textContent =
+        "Account created! Check your email to confirm your account.";
+
+      $("#authForm").reset();
+
+    } else {
+
+      const { error } =
+        await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) throw error;
+
+      closeAuth();
+      toast("Welcome back to Cinemora 🎬");
+      updateAuthButton();
+    }
+
+  } catch (error) {
+    console.error(error);
+    message.textContent =
+      error.message || "Authentication failed.";
+  } finally {
+    submit.disabled = false;
+
+    submit.textContent =
+      authMode === "signup"
+        ? "Create Account"
+        : "Login";
+  }
+}
+
+async function updateAuthButton() {
+  const {
+    data: { session }
+  } = await supabaseClient.auth.getSession();
+
+  const button = $("#profileBtn");
+
+  if (!button) return;
+
+  if (session?.user) {
+    const username =
+      session.user.user_metadata?.username ||
+      session.user.email?.charAt(0) ||
+      "U";
+
+    button.textContent =
+      username.charAt(0).toUpperCase();
+
+    button.title = "Your account";
+
+  } else {
+
+    button.textContent = "A";
+    button.title = "Login / Sign Up";
+  }
+}
+
+function bindAuthUI() {
+
+  $("#profileBtn").onclick = () => {
+    openAuth("login");
+  };
+
+  $("#authClose").onclick = closeAuth;
+
+  $("#authBackdrop").onclick = e => {
+    if (e.target.id === "authBackdrop") {
+      closeAuth();
+    }
+  };
+
+  $("#authSwitch").onclick = () => {
+    authMode =
+      authMode === "login"
+        ? "signup"
+        : "login";
+
+    updateAuthUI();
+  };
+
+  $("#authForm").addEventListener(
+    "submit",
+    handleAuth
+  );
+
+  supabaseClient.auth.onAuthStateChange(() => {
+    updateAuthButton();
+  });
+
+  updateAuthButton();
 }
 function isSaved(id) { return state.watchlist.includes(Number(id)); }
 function updateCount() { $("#watchlistCount").textContent = state.watchlist.length; }
@@ -486,6 +662,7 @@ function closeModal() {
 
 async function init() {
   bindUI();
+  bindAuthUI();
   updateCount();
   await loadHome();
 
