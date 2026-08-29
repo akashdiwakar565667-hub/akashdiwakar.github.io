@@ -33,6 +33,68 @@
       <button class="avatar-btn" id="profileBtn">A</button>
       <button class="icon-btn mobile-only" id="menuToggle">☰</button>
     </div>
+    <div class="toast-stack" id="toastStack"></div>
+    <!-- AUTH MODAL -->
+<div class="modal-backdrop hidden" id="authBackdrop">
+  <section class="modal glass-panel auth-modal">
+
+    <button class="modal-close" id="authClose">×</button>
+
+    <div class="auth-header">
+      <p class="eyebrow">WELCOME TO CINEMORA</p>
+      <h2 id="authTitle">Login</h2>
+      <p id="authSubtitle">Continue your cinematic journey.</p>
+    </div>
+
+    <form id="authForm">
+
+      <div class="auth-field signup-only hidden">
+        <label for="authName">Username</label>
+        <input
+          id="authName"
+          type="text"
+          placeholder="Enter your username"
+          autocomplete="name"
+        >
+      </div>
+
+      <div class="auth-field">
+        <label for="authEmail">Email</label>
+        <input
+          id="authEmail"
+          type="email"
+          placeholder="Enter your email"
+          autocomplete="email"
+          required
+        >
+      </div>
+
+      <div class="auth-field">
+        <label for="authPassword">Password</label>
+        <input
+          id="authPassword"
+          type="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        >
+      </div>
+
+      <button type="submit" class="primary-btn" id="authSubmit">
+        Login
+      </button>
+
+    </form>
+
+    <p class="auth-switch">
+      <span id="authSwitchText">Don't have an account?</span>
+      <button type="button" id="authSwitch">Sign Up</button>
+    </p>
+
+    <p class="auth-message" id="authMessage"></p>
+
+  </section>
+</div>
   </header>
 
   <div class="mobile-menu glass-panel" id="mobileMenu">
