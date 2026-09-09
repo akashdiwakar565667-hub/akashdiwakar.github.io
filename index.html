@@ -1,180 +1,536 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <meta name="theme-color" content="#090b12">
-  <meta name="description" content="CINEMORA — cinematic movie and series discovery.">
+  <meta
+    name="description"
+    content="CINEMORA — cinematic movie and series discovery."
+  >
+
   <title>CINEMORA — Discover Your Next Story</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-  
+
+  <!-- Background -->
   <div class="ambient ambient-a"></div>
   <div class="ambient ambient-b"></div>
   <div class="noise"></div>
 
+
+  <!-- =========================
+       HEADER
+       ========================= -->
+
   <header class="site-header">
-    <a class="brand" href="#" data-nav="home"><span class="brand-mark">C</span><span>CINEMORA</span></a>
+
+    <a class="brand" href="#" data-nav="home">
+      <span class="brand-mark">C</span>
+      <span>CINEMORA</span>
+    </a>
+
+
     <nav class="desktop-nav">
-      <button class="nav-link active" data-nav="home">Home</button>
-      <button class="nav-link" data-nav="movies">Movies</button>
-      <button class="nav-link" data-nav="series">Series</button>
-      <button class="nav-link" data-nav="genres">Genres</button>
-      <button class="nav-link" data-nav="trending">Trending</button>
-    </nav>
-    <div class="header-actions">
-      <button class="icon-btn" id="searchToggle">⌕</button>
-      <button class="icon-btn" id="watchlistBtn">♡<span class="count-badge" id="watchlistCount">0</span></button>
-      <button class="icon-btn" id="settingsBtn">⚙</button>
-      <button class="avatar-btn" id="profileBtn">A</button>
-      <button class="icon-btn mobile-only" id="menuToggle">☰</button>
-    </div>
-    
-<div class="modal-backdrop hidden" id="authBackdrop">
-  <section class="modal glass-panel auth-modal">
 
-    <button class="modal-close" id="authClose">×</button>
-
-    <div class="auth-header">
-      <p class="eyebrow">WELCOME TO CINEMORA</p>
-      <h2 id="authTitle">Login</h2>
-      <p id="authSubtitle">Continue your cinematic journey.</p>
-    </div>
-
-    <form id="authForm">
-
-      <div class="auth-field signup-only hidden">
-        <label for="authName">Username</label>
-        <input
-          id="authName"
-          type="text"
-          placeholder="Enter your username"
-          autocomplete="name"
-        >
-      </div>
-
-      <div class="auth-field">
-        <label for="authEmail">Email</label>
-        <input
-          id="authEmail"
-          type="email"
-          placeholder="Enter your email"
-          autocomplete="email"
-          required
-        >
-      </div>
-
-      <div class="auth-field">
-        <label for="authPassword">Password</label>
-        <input
-          id="authPassword"
-          type="password"
-          placeholder="Enter your password"
-          autocomplete="current-password"
-          required
-        >
-      </div>
-
-      <button type="submit" class="primary-btn" id="authSubmit">
-        Login
+      <button class="nav-link active" data-nav="home">
+        Home
       </button>
 
-    </form>
+      <button class="nav-link" data-nav="movies">
+        Movies
+      </button>
 
-    <p class="auth-switch">
-      <span id="authSwitchText">Don't have an account?</span>
-      <button type="button" id="authSwitch">Sign Up</button>
-    </p>
+      <button class="nav-link" data-nav="series">
+        Series
+      </button>
 
-    <p class="auth-message" id="authMessage"></p>
+      <button class="nav-link" data-nav="genres">
+        Genres
+      </button>
 
-  </section>
-</div>
+      <button class="nav-link" data-nav="trending">
+        Trending
+      </button>
+
+    </nav>
+
+
+    <div class="header-actions">
+
+      <button class="icon-btn" id="searchToggle">
+        ⌕
+      </button>
+
+      <button class="icon-btn" id="watchlistBtn">
+        ♡
+        <span class="count-badge" id="watchlistCount">0</span>
+      </button>
+
+      <button class="icon-btn" id="settingsBtn">
+        ⚙
+      </button>
+
+      <button class="avatar-btn" id="profileBtn">
+        A
+      </button>
+
+      <button class="icon-btn mobile-only" id="menuToggle">
+        ☰
+      </button>
+
+    </div>
+
   </header>
 
-  <div class="mobile-menu glass-panel" id="mobileMenu">
-    <button data-nav="home">Home</button>
-    <button data-nav="movies">Movies</button>
-    <button data-nav="series">Series</button>
-    <button data-nav="genres">Genres</button>
-    <button data-nav="trending">Trending</button>
-    <button id="mobileWatchlist">Watchlist</button>
+
+  <!-- =========================
+       AUTH MODAL
+       IMPORTANT:
+       OUTSIDE HEADER
+       ========================= -->
+
+  <div class="modal-backdrop hidden" id="authBackdrop">
+
+    <section class="modal glass-panel auth-modal">
+
+      <button class="modal-close" id="authClose">
+        ×
+      </button>
+
+
+      <div class="auth-header">
+
+        <p class="eyebrow">
+          WELCOME TO CINEMORA
+        </p>
+
+        <h2 id="authTitle">
+          Login
+        </h2>
+
+        <p id="authSubtitle">
+          Continue your cinematic journey.
+        </p>
+
+      </div>
+
+
+      <form id="authForm">
+
+        <!-- Username -->
+        <div class="auth-field signup-only hidden">
+
+          <label for="authName">
+            Username
+          </label>
+
+          <input
+            id="authName"
+            type="text"
+            placeholder="Enter your username"
+            autocomplete="name"
+          >
+
+        </div>
+
+
+        <!-- Email -->
+        <div class="auth-field">
+
+          <label for="authEmail">
+            Email
+          </label>
+
+          <input
+            id="authEmail"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+
+        <!-- Password -->
+        <div class="auth-field">
+
+          <label for="authPassword">
+            Password
+          </label>
+
+          <input
+            id="authPassword"
+            type="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          >
+
+        </div>
+
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="primary-btn"
+          id="authSubmit"
+        >
+          Login
+        </button>
+
+      </form>
+
+
+      <!-- Login / Signup switch -->
+      <p class="auth-switch">
+
+        <span id="authSwitchText">
+          Don't have an account?
+        </span>
+
+        <button
+          type="button"
+          id="authSwitch"
+        >
+          Sign Up
+        </button>
+
+      </p>
+
+
+      <!-- Auth message -->
+      <p
+        class="auth-message"
+        id="authMessage"
+      ></p>
+
+    </section>
+
   </div>
+
+
+  <!-- =========================
+       MOBILE MENU
+       ========================= -->
+
+  <div
+    class="mobile-menu glass-panel"
+    id="mobileMenu"
+  >
+
+    <button data-nav="home">
+      Home
+    </button>
+
+    <button data-nav="movies">
+      Movies
+    </button>
+
+    <button data-nav="series">
+      Series
+    </button>
+
+    <button data-nav="genres">
+      Genres
+    </button>
+
+    <button data-nav="trending">
+      Trending
+    </button>
+
+    <button id="mobileWatchlist">
+      Watchlist
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       MAIN
+       ========================= -->
 
   <main>
-    <section class="hero" id="hero"></section>
 
-    <section class="search-area" id="searchArea">
+    <!-- Hero -->
+    <section
+      class="hero"
+      id="hero"
+    ></section>
+
+
+    <!-- Search -->
+    <section
+      class="search-area"
+      id="searchArea"
+    >
+
       <div class="search-box glass-panel">
+
         <span>⌕</span>
-        <input id="searchInput" type="search" autocomplete="off" placeholder="Search movies, series, genres or years...">
-        <button id="clearSearch" class="clear-search">×</button>
+
+        <input
+          id="searchInput"
+          type="search"
+          autocomplete="off"
+          placeholder="Search movies, series, genres or years..."
+        >
+
+        <button
+          id="clearSearch"
+          class="clear-search"
+        >
+          ×
+        </button>
+
       </div>
-      <div id="suggestions" class="suggestions glass-panel hidden"></div>
+
+
+      <div
+        id="suggestions"
+        class="suggestions glass-panel hidden"
+      ></div>
+
     </section>
 
+
+    <!-- Content -->
     <section class="content-shell">
+
       <div class="section-heading">
-        <div><p class="eyebrow">CURATED FOR YOU</p><h2 id="pageTitle">Trending Now</h2></div>
-        <button class="ghost-btn" id="surpriseBtn">🎲 Surprise Me</button>
+
+        <div>
+
+          <p class="eyebrow">
+            CURATED FOR YOU
+          </p>
+
+          <h2 id="pageTitle">
+            Trending Now
+          </h2>
+
+        </div>
+
+
+        <button
+          class="ghost-btn"
+          id="surpriseBtn"
+        >
+          🎲 Surprise Me
+        </button>
+
       </div>
-      <div class="filter-row" id="filterRow"></div>
-      <div class="sort-row hidden" id="sortRow">
-        <label>Sort</label>
+
+
+      <!-- Filters -->
+      <div
+        class="filter-row"
+        id="filterRow"
+      ></div>
+
+
+      <!-- Sort -->
+      <div
+        class="sort-row hidden"
+        id="sortRow"
+      >
+
+        <label>
+          Sort
+        </label>
+
         <select id="sortSelect">
-          <option value="popularity">Popularity</option>
-          <option value="rating">Rating</option>
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="az">A-Z</option>
+
+          <option value="popularity">
+            Popularity
+          </option>
+
+          <option value="rating">
+            Rating
+          </option>
+
+          <option value="newest">
+            Newest
+          </option>
+
+          <option value="oldest">
+            Oldest
+          </option>
+
+          <option value="az">
+            A-Z
+          </option>
+
         </select>
+
       </div>
+
+
+      <!-- Dynamic movie/series sections -->
       <div id="sections"></div>
+
     </section>
+
   </main>
 
+
+  <!-- =========================
+       MAIN FOOTER
+       ========================= -->
+
   <footer class="footer">
-    <div><span class="brand-small">CINEMORA</span><p>Premium discovery for stories worth watching.</p></div>
-    <div class="footer-note">Movie and TV metadata powered by TMDB. No video files are hosted here.</div>
-    
+
+    <div>
+
+      <span class="brand-small">
+        CINEMORA
+      </span>
+
+      <p>
+        Premium discovery for stories worth watching.
+      </p>
+
+    </div>
+
+
+    <div class="footer-note">
+      Movie and TV metadata powered by TMDB.
+      No video files are hosted here.
+    </div>
+
   </footer>
 
-  <div class="modal-backdrop hidden" id="modalBackdrop">
-    <section class="modal glass-panel" id="modal">
-      <button class="modal-close" id="modalClose">×</button>
+
+  <!-- =========================
+       SOCIAL FOOTER
+       ========================= -->
+
+  <footer class="social-footer">
+
+    <p>
+      ❤️ Support & Follow Us
+    </p>
+
+
+    <div class="social-links">
+
+      <a
+        href="https://www.instagram.com/xiakashix/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        📸 Instagram
+      </a>
+
+
+      <a
+        href="https://www.youtube.com/@ANIME.COOLii"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        ▶️ YouTube
+      </a>
+
+    </div>
+
+
+    <p class="copyright">
+      © 2026 Cinemora. All rights reserved.
+    </p>
+
+  </footer>
+
+
+  <!-- =========================
+       DETAILS MODAL
+       ========================= -->
+
+  <div
+    class="modal-backdrop hidden"
+    id="modalBackdrop"
+  >
+
+    <section
+      class="modal glass-panel"
+      id="modal"
+    >
+
+      <button
+        class="modal-close"
+        id="modalClose"
+      >
+        ×
+      </button>
+
       <div id="modalContent"></div>
+
     </section>
+
   </div>
 
-  <aside class="drawer glass-panel" id="drawer">
-    <button class="modal-close" id="drawerClose">×</button>
+
+  <!-- =========================
+       DRAWER
+       ========================= -->
+
+  <aside
+    class="drawer glass-panel"
+    id="drawer"
+  >
+
+    <button
+      class="modal-close"
+      id="drawerClose"
+    >
+      ×
+    </button>
+
     <div id="drawerContent"></div>
+
   </aside>
 
- <div class="toast-stack" id="toastStack"></div>
-<button class="back-top" id="backTop">↑</button>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/script.js"></script>
+  <!-- =========================
+       TOAST
+       ========================= -->
 
-<footer class="social-footer">
-  <p>❤️ Support & Follow Us</p> 
- 
-  <div class="social-links"> 
-    <a href="https://www.instagram.com/xiakashix/" target="_blank" rel="noopener noreferrer"> 
-      📸 Instagram 
-    </a> 
- 
-    <a href="https://www.youtube.com/@ANIME.COOLii" target="_blank" rel="noopener noreferrer">
-      ▶️ YouTube
-    </a>
-  </div>
+  <div
+    class="toast-stack"
+    id="toastStack"
+  ></div>
 
-  <p class="copyright">© 2026 Cinemora. All rights reserved.</p>
-</footer>
+
+  <!-- Back to top -->
+  <button
+    class="back-top"
+    id="backTop"
+  >
+    ↑
+  </button>
+
+
+  <!-- =========================
+       SCRIPTS
+       ========================= -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="js/script.js"></script>
+
 </body>
+
 </html>
