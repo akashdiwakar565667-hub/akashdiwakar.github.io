@@ -9,7 +9,7 @@ A website that show you TV show, Movies, built using HTML, CSS, and JavaScript.
 
 ## ▶️ My work 
 Click here to play:  
-https://akashdiwakar565667-hub.github.io
+https://akashdiwakar565667-hub-github-io.vercel.app
 
 
 ## 🛠️ Tech Used
